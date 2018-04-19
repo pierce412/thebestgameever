@@ -11,7 +11,6 @@ import UIKit
 class GameViewController: UIViewController {
     
     let gameView = GameView(frame: UIScreen.main.bounds)
-    //instructionLabel, exitButton, replayButton
     
     var isXTurn: Bool = true
     
@@ -19,58 +18,79 @@ class GameViewController: UIViewController {
         super .viewDidLoad()
         view.addSubview(gameView)
         gameView.gameController = self
-        gameView.replayButton.isEnabled = false
-        beginGame()
+        gameView.replayButton.isHidden = true
     }
     
-    @objc func moveMade() {
-        print("Button was tapped")
+    @objc func moveMade(_ sender: UIButton) {
         if(isXTurn){
-            //senders image set to 'X'
+            sender.setImage(#imageLiteral(resourceName: "X"), for: .normal)
+            isXTurn = false
+        } else {
+            sender.setImage(#imageLiteral(resourceName: "O"), for: .normal)
+            isXTurn = true
         }
-        else {
-            //senders image set to 'O'
-        }
+        gameView.replayButton.isHidden = false
         checkForWin()
     }
     
     func checkForWin() {
-        print("Checked For Win")
-        //if win
-        
-        //horizontal wins
-        if ((gameView.topLeftButton.imageView?.image == gameView.topCenterButton.imageView?.image && gameView.topCenterButton.imageView?.image == gameView.topRightButton.imageView?.image) ||
-            (gameView.centerLeftButton.imageView?.image == gameView.centerButton.imageView?.image && gameView.centerButton.imageView?.image == gameView.centerRightButton.imageView?.image) ||
-            (gameView.bottomLeftButton.imageView?.image == gameView.bottomCenterButton.imageView?.image && gameView.bottomCenterButton.imageView?.image == gameView.bottomRightButton.imageView?.image) ||
-            //veritcal wins
-            (gameView.topLeftButton.imageView?.image == gameView.centerLeftButton.imageView?.image && gameView.centerLeftButton.imageView?.image == gameView.bottomLeftButton.imageView?.image) ||
-            (gameView.topCenterButton.imageView?.image == gameView.centerButton.imageView?.image && gameView.centerButton.imageView?.image == gameView.bottomCenterButton.imageView?.image) ||
-            (gameView.topRightButton.imageView?.image == gameView.centerRightButton.imageView?.image && gameView.centerRightButton.imageView?.image == gameView.bottomRightButton.imageView?.image) ||
-            //diagonal wins
-            (gameView.topLeftButton.imageView?.image == gameView.centerButton.imageView?.image && gameView.centerButton.imageView?.image == gameView.bottomRightButton.imageView?.image) ||
-            (gameView.topRightButton.imageView?.image == gameView.centerButton.imageView?.image && gameView.centerButton.imageView?.image == gameView.bottomLeftButton.imageView?.image)
-            ){
-            //make replay button visible
-            gameView.replayButton.isEnabled = true
-            if (isXTurn){
-                gameView.instructionLabel.text = "X wins"
-            }
-            else {
-                gameView.instructionLabel.text = "O wins"
-            }
+        //Horizontal Wins for O
+        if gameView.topLeftButton.imageView?.image == #imageLiteral(resourceName: "O") && gameView.topCenterButton.imageView?.image == #imageLiteral(resourceName: "O") && gameView.topRightButton.imageView?.image == #imageLiteral(resourceName: "O") ||
+            gameView.centerLeftButton.imageView?.image == #imageLiteral(resourceName: "O") && gameView.centerButton.imageView?.image == #imageLiteral(resourceName: "O") && gameView.centerRightButton.imageView?.image == #imageLiteral(resourceName: "O") ||
+            gameView.bottomLeftButton.imageView?.image == #imageLiteral(resourceName: "O") && gameView.bottomCenterButton.imageView?.image == #imageLiteral(resourceName: "O") && gameView.bottomRightButton.imageView?.image == #imageLiteral(resourceName: "O") ||
+            //Vertical Wins for O
+            gameView.bottomLeftButton.imageView?.image == #imageLiteral(resourceName: "O") && gameView.centerLeftButton.imageView?.image == #imageLiteral(resourceName: "O") && gameView.topLeftButton.imageView?.image == #imageLiteral(resourceName: "O") ||
+            gameView.bottomCenterButton.imageView?.image == #imageLiteral(resourceName: "O") && gameView.centerButton.imageView?.image == #imageLiteral(resourceName: "O") && gameView.topCenterButton.imageView?.image == #imageLiteral(resourceName: "O") ||
+            gameView.bottomRightButton.imageView?.image == #imageLiteral(resourceName: "O") && gameView.centerRightButton.imageView?.image == #imageLiteral(resourceName: "O") && gameView.topRightButton.imageView?.image == #imageLiteral(resourceName: "O") ||
+            //Diagonal Wins for O
+            gameView.bottomRightButton.imageView?.image == #imageLiteral(resourceName: "O") && gameView.centerButton.imageView?.image == #imageLiteral(resourceName: "O") && gameView.topLeftButton.imageView?.image == #imageLiteral(resourceName: "O") ||
+            gameView.topRightButton.imageView?.image == #imageLiteral(resourceName: "O") && gameView.centerButton.imageView?.image == #imageLiteral(resourceName: "O") && gameView.bottomLeftButton.imageView?.image == #imageLiteral(resourceName: "O") {
+            
+            gameView.instructionLabel.text = "O's Win"
+            gameView.boardImageView.isUserInteractionEnabled = false
+            
         }
-        else {
-            if(isXTurn){
-                gameView.instructionLabel.text = "O's turn..."
-            }
-            else {
-                gameView.instructionLabel.text = "X's turn..."
-            }
+            //Horizontal Wins for X
+        else if gameView.topLeftButton.imageView?.image == #imageLiteral(resourceName: "X") && gameView.topCenterButton.imageView?.image == #imageLiteral(resourceName: "X") && gameView.topRightButton.imageView?.image == #imageLiteral(resourceName: "X") ||
+            gameView.centerLeftButton.imageView?.image == #imageLiteral(resourceName: "X") && gameView.centerButton.imageView?.image == #imageLiteral(resourceName: "X") && gameView.centerRightButton.imageView?.image == #imageLiteral(resourceName: "X") ||
+            gameView.bottomLeftButton.imageView?.image == #imageLiteral(resourceName: "X") && gameView.bottomCenterButton.imageView?.image == #imageLiteral(resourceName: "X") && gameView.bottomRightButton.imageView?.image == #imageLiteral(resourceName: "X") ||
+            //Vertical Wins for X
+            gameView.bottomLeftButton.imageView?.image == #imageLiteral(resourceName: "X") && gameView.centerLeftButton.imageView?.image == #imageLiteral(resourceName: "X") && gameView.topLeftButton.imageView?.image == #imageLiteral(resourceName: "X") ||
+            gameView.bottomCenterButton.imageView?.image == #imageLiteral(resourceName: "X") && gameView.centerButton.imageView?.image == #imageLiteral(resourceName: "X") && gameView.topCenterButton.imageView?.image == #imageLiteral(resourceName: "X") ||
+            gameView.bottomRightButton.imageView?.image == #imageLiteral(resourceName: "X") && gameView.centerRightButton.imageView?.image == #imageLiteral(resourceName: "X") && gameView.topRightButton.imageView?.image == #imageLiteral(resourceName: "X") ||
+            //Diagonal Wins for X
+            gameView.bottomRightButton.imageView?.image == #imageLiteral(resourceName: "X") && gameView.centerButton.imageView?.image == #imageLiteral(resourceName: "X") && gameView.topLeftButton.imageView?.image == #imageLiteral(resourceName: "X") ||
+            gameView.topRightButton.imageView?.image == #imageLiteral(resourceName: "X") && gameView.centerButton.imageView?.image == #imageLiteral(resourceName: "X") && gameView.bottomLeftButton.imageView?.image == #imageLiteral(resourceName: "X") {
+            
+            gameView.instructionLabel.text = "X's Win"
+            gameView.boardImageView.isUserInteractionEnabled = false
+        } else if isXTurn {
+            
+            gameView.instructionLabel.text = "X's Turn"
+            
+        } else {
+            
+            gameView.instructionLabel.text = "O's Turn"
         }
     }
-    func beginGame() {
-        gameView.instructionLabel.text = "X's turn..."
+    
+    @objc func replayButtonTapped() {
+        gameView.instructionLabel.text = "X's Starts"
+        gameView.topLeftButton.setImage(UIImage(), for: .normal)
+        gameView.topCenterButton.setImage(UIImage(), for: .normal)
+        gameView.topRightButton.setImage(UIImage(), for: .normal)
+        gameView.centerLeftButton.setImage(UIImage(), for: .normal)
+        gameView.centerButton.setImage(UIImage(), for: .normal)
+        gameView.centerRightButton.setImage(UIImage(), for: .normal)
+        gameView.bottomLeftButton.setImage(UIImage(), for: .normal)
+        gameView.bottomCenterButton.setImage(UIImage(), for: .normal)
+        gameView.bottomRightButton.setImage(UIImage(), for: .normal)
+        gameView.replayButton.isHidden = true
         isXTurn = true
-        
+        gameView.boardImageView.isUserInteractionEnabled = true
+    }
+    
+    @objc func exitButtonTapped() {
+        dismiss(animated: true, completion: nil)
     }
 }
