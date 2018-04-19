@@ -15,5 +15,10 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super .viewDidLoad()
         view.addSubview(homeView)
+        homeView.homeController = self
+    }
+    @objc func startButtonTapped() {
+        let gvc = GameViewController()
+        self.present(gvc, animated: true, completion: nil)
     }
 }
