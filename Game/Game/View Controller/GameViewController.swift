@@ -15,5 +15,16 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
          super .viewDidLoad()
         view.addSubview(gameView)
+        gameView.gameController = self
+    }
+    
+    @objc func moveMade() {
+      print("Button was tapped")
+        checkForWin()
+    }
+    
+    func checkForWin() {
+        
+        print("Checked For Win")
     }
 }
