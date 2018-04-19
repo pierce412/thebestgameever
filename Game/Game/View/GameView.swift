@@ -17,6 +17,7 @@ class GameView: UIView {
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
         imageView.image = #imageLiteral(resourceName: "Board")
+        imageView.backgroundColor = .blue
         imageView.isUserInteractionEnabled = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -86,6 +87,7 @@ class GameView: UIView {
     let replayButton: UIButton = {
         let button = UIButton()
         button.setTitle("Replay", for: .normal)
+        button.setTitleColor(.blue, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -93,13 +95,24 @@ class GameView: UIView {
     let exitButton: UIButton = {
         let button = UIButton()
         button.setTitle("Exit", for: .normal)
+        button.setTitleColor(.blue, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
     var gameController: GameViewController? {
         didSet {
-            
+            topLeftButton.addTarget(gameController, action: #selector(gameController?.moveMade(_:)), for: .touchUpInside)
+            topCenterButton.addTarget(gameController, action: #selector(gameController?.moveMade(_:)), for: .touchUpInside)
+            topRightButton.addTarget(gameController, action: #selector(gameController?.moveMade(_:)), for: .touchUpInside)
+            centerLeftButton.addTarget(gameController, action: #selector(gameController?.moveMade(_:)), for: .touchUpInside)
+            centerButton.addTarget(gameController, action: #selector(gameController?.moveMade(_:)), for: .touchUpInside)
+            centerRightButton.addTarget(gameController, action: #selector(gameController?.moveMade(_:)), for: .touchUpInside)
+            bottomLeftButton.addTarget(gameController, action: #selector(gameController?.moveMade(_:)), for: .touchUpInside)
+            bottomCenterButton.addTarget(gameController, action: #selector(gameController?.moveMade(_:)), for: .touchUpInside)
+            bottomRightButton.addTarget(gameController, action: #selector(gameController?.moveMade(_:)), for: .touchUpInside)
+            exitButton.addTarget(gameController, action: #selector(gameController?.exitButtonTapped), for: .touchUpInside)
+            replayButton.addTarget(gameController, action: #selector(gameController?.replayButtonTapped), for: .touchUpInside)
         }
     }
     
@@ -127,13 +140,15 @@ class GameView: UIView {
         boardImageView.addSubview(bottomLeftButton)
         boardImageView.addSubview(bottomCenterButton)
         boardImageView.addSubview(bottomRightButton)
+        addSubview(exitButton)
+        addSubview(replayButton)
         
         instructionLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         instructionLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 40).isActive = true
         
         boardImageView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         boardImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        boardImageView.heightAnchor.constraint(equalTo: heightAnchor, constant: -200).isActive = true
+        boardImageView.heightAnchor.constraint(equalTo: heightAnchor, constant: -250).isActive = true
         boardImageView.widthAnchor.constraint(equalTo: widthAnchor, constant: -20).isActive = true
         
         topLeftButton.leftAnchor.constraint(equalTo: boardImageView.leftAnchor).isActive = true
@@ -180,5 +195,11 @@ class GameView: UIView {
         bottomRightButton.bottomAnchor.constraint(equalTo: boardImageView.bottomAnchor).isActive = true
         bottomRightButton.widthAnchor.constraint(equalTo: boardImageView.widthAnchor, multiplier: 0.26).isActive = true
         bottomRightButton.heightAnchor.constraint(equalTo: boardImageView.heightAnchor, multiplier: 0.31).isActive = true
+        
+        exitButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        exitButton.topAnchor.constraint(equalTo: boardImageView.bottomAnchor, constant: 20).isActive = true
+        
+        replayButton.topAnchor.constraint(equalTo: exitButton.bottomAnchor, constant: 10).isActive = true
+        replayButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
     }
 }
